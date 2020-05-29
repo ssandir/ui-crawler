@@ -6,7 +6,7 @@ import logging
 
 
 NUM_OF_TRIES = 600
-NUM_OF_DRIVER_REQUESTS = 100
+NUM_OF_DRIVER_REQUESTS = 20
 
 
 class Worker(threading.Thread):
@@ -46,6 +46,7 @@ class Worker(threading.Thread):
                 logging.warning("Reseting selenium webdriver...")
                 self.driver.quit()
                 self.driver = init_selenium()
+                time.sleep(5)
                 selenium_counter = 0
 
             try:
@@ -53,4 +54,5 @@ class Worker(threading.Thread):
                 parse_page(self.coredb, self.driver, page, self.config, Worker.locks)
                 selenium_counter += 1
             except Exception as e:
+                selenium_counter += 1
                 logging.error(e)

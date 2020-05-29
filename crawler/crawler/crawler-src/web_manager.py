@@ -74,8 +74,6 @@ def get_status_code_and_content_type(driver):
         if content_type.startswith(key):
             content_type = value
             break
-    else:
-        content_type = None
 
     return status_code, content_type
 
@@ -206,9 +204,4 @@ def parse_page(coredb, driver, page, config, locks):
         else:
             coredb.update_page(page['id'], 'BINARY', status_code)
     else:
-        if content_type is None:
-            coredb.update_page(page['id'], content_type, status_code)
-        elif content_type == 'html':
-            process_html_page(coredb, driver, page, config, locks)
-        else:  # pdf, docs...
-            coredb.update_page(page['id'], content_type, status_code)
+        process_html_page(coredb, driver, page, config, locks)

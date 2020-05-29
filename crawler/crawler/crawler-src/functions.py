@@ -64,7 +64,7 @@ def extract_info_from_url(url):
 
 
 def is_imdb_site(site):
-    return bool(re.search('(^|\\.)imdb\\.com', site, re.IGNORECASE))
+    return bool(re.search('^imdb\\.com', site, re.IGNORECASE)) or bool(re.search('^www\\.imdb\\.com', site, re.IGNORECASE))
 
 
 def is_robots_valid(content):
