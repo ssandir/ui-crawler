@@ -43,7 +43,7 @@ def get_status_code_and_content_type(driver):
             break
 
         status_code = driver.requests[i].response.status_code
-        if status_code == 200 or status_code not in [301, 302, 303, 307, 308]:
+        if (status_code >= 200 and status_code < 210) or status_code not in [301, 302, 303, 307, 308]:
             response = driver.requests[i].response
             break
     else:
@@ -201,8 +201,8 @@ def parse_page(coredb, driver, page, config, locks):
             coredb.update_page(page['id'], 'BINARY', status_code)
     else:
         if content_type is None:
-            coredb.update_page(page['id'], 'BINARY', 200)
+            coredb.update_page(page['id'], 'BINARY', status_code)
         elif content_type == 'html':
             process_html_page(coredb, driver, page, config, locks)
         else:  # pdf, docs...
-            coredb.update_page(page['id'], 'BINARY', 200)
+            coredb.update_page(page['id'], 'BINARY', status_code)
