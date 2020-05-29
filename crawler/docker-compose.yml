@@ -22,7 +22,7 @@ services:
       CRAWLER_BOT_NAME: "fri-ieps-TEAMNAME"
       CRAWLER_SEED_URLS: "https://www.imdb.com"
       CRAWLER_WORKERS: "3"
-      CRAWLER_REQUEST_DELAY: "2"
+      CRAWLER_REQUEST_DELAY: "3"
       SELENIUM_TIMEOUT: "15"
       CRAWLER_LOG_LEVEL: "INFO"
       PYTHONWARNINGS: "ignore:Unverified HTTPS request"

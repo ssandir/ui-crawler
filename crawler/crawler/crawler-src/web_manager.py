@@ -143,7 +143,8 @@ def get_links_from_page(driver, source):
 
 def process_html_page(coredb, driver, page, config, locks):
     source = get_clean_source(driver.page_source)
-    text_content = Cleaner.clean_all(source)
+    text_content_dirty = driver.find_element_by_tag_name("body").text
+    text_content = Cleaner.clean_all(text_content_dirty)
     text_content_hash = get_source_hash(text_content)
     duplicate_page = coredb.get_page_with_hash(text_content_hash)
     if duplicate_page is not None:
