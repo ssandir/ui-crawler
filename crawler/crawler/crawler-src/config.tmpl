@@ -1,0 +1,14 @@
+[DB]
+host={{ .Env.POSTGRES_HOST }}
+database={{ .Env.POSTGRES_DB }}
+user={{ .Env.POSTGRES_USER }}
+password={{ .Env.POSTGRES_PASSWORD }}
+
+[CRAWLER]
+bot_name={{ .Env.CRAWLER_BOT_NAME }}
+seed_urls={{ .Env.CRAWLER_SEED_URLS }}
+workers={{ .Env.CRAWLER_WORKERS }}
+request_delay={{ .Env.CRAWLER_REQUEST_DELAY }}
+selenium_timeout={{ .Env.SELENIUM_TIMEOUT }}
+chromedriver_path={{ .Env.CHROMEDRIVER_PATH }}
+log_level={{ .Env.CRAWLER_LOG_LEVEL }}

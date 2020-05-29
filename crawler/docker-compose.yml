@@ -1,0 +1,37 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:9"
+    container_name: "postgres"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_DB: "crawldb"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+    volumes:
+      - "./db:/docker-entrypoint-initdb.d"
+  crawler:
+    build: "./crawler"
+    container_name: "crawler"
+    environment:
+      POSTGRES_HOST: "postgres"
+      POSTGRES_DB: "crawldb"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      CRAWLER_BOT_NAME: "fri-ieps-TEAMNAME"
+      CRAWLER_SEED_URLS: "https://gov.si,https://evem.gov.si,https://e-uprava.gov.si,https://e-prostor.gov.si"
+      CRAWLER_WORKERS: "4"
+      CRAWLER_REQUEST_DELAY: "5"
+      SELENIUM_TIMEOUT: "15"
+      CRAWLER_LOG_LEVEL: "INFO"
+      PYTHONWARNINGS: "ignore:Unverified HTTPS request"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - "./crawler/crawler-src:/crawler-src"
+    depends_on:
+      - postgres
+    command: >
+      sh -c "dockerize -template /crawler-src/config.tmpl:/crawler-src/config.conf -wait tcp://postgres:5432 &&
+             chmod 666 /crawler-src/config.conf &&
+             python3.8 /crawler-src/main.py"
