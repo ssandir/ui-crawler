@@ -63,8 +63,8 @@ def extract_info_from_url(url):
         return None, None, None
 
 
-def is_govsi_site(site):
-    return bool(re.search('(^|\\.)gov\\.si', site, re.IGNORECASE))
+def is_imdb_site(site):
+    return bool(re.search('(^|\\.)imdb\\.com', site, re.IGNORECASE))
 
 
 def is_robots_valid(content):
@@ -131,7 +131,7 @@ def handle_new_page(coredb, url, crawler_config, locks, link_from_id=None):
         logging.debug('Skipping page {} due to extraction info problem'.format(url))
         return
 
-    if is_govsi_site(site) is False:
+    if is_imdb_site(site) is False:
         logging.debug('Skipping page {} due to gov.si filter'.format(url))
         return
 
