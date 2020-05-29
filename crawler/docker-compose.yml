@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_USER: "postgres"
       CRAWLER_BOT_NAME: "fri-ieps-TEAMNAME"
-      CRAWLER_SEED_URLS: "https://www.imdb.com"
+      CRAWLER_SEED_URLS: "https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250,https://www.imdb.com/chart/top/?ref_=nv_mv_250,https://www.imdb.com/feature/genre/?ref_=nv_tv_gr,https://www.imdb.com/feature/genre/?ref_=nv_ch_gr,https://www.imdb.com"
       CRAWLER_WORKERS: "3"
       CRAWLER_REQUEST_DELAY: "3"
       SELENIUM_TIMEOUT: "15"

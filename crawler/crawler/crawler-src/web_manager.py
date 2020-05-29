@@ -24,6 +24,8 @@ def init_selenium():
     options.add_argument('--disable-dev-shm-usage')  # Some resource/storage stuff
     options.add_argument('--no-sandbox')  # Rip security, but doesn't work otherwise
     options.add_argument('user-agent=' + crawler_config['bot_name'])  # Course stuff
+    prefs = {"profile.managed_default_content_settings.images": 2}
+    options.add_experimental_option("prefs", prefs)
     driver = webdriver.Chrome(crawler_config['chromedriver_path'], options=options)
     driver.set_page_load_timeout(crawler_config['selenium_timeout'])
     return driver
