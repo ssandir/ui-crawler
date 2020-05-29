@@ -47,6 +47,7 @@ class Worker(threading.Thread):
                 self.driver.quit()
                 self.driver = init_selenium()
                 selenium_counter = 0
+
             try:
                 logging.info("Worker on: {0} [{1}/{2}]".format(page['url'], selenium_counter + 1, NUM_OF_DRIVER_REQUESTS))
                 parse_page(self.coredb, self.driver, page, self.config, Worker.locks)

@@ -154,12 +154,12 @@ def process_html_page(coredb, driver, page, config, locks):
     for url in links:
         handle_new_link(coredb, config, url, page['id'], locks)
 
-    imgs = driver.find_elements_by_xpath('//img[@src]')
-    img_srcs = set([img.get_attribute('src') for img in imgs])
-    for img_src in img_srcs:
-        if ',' in img_src:
-            continue  # for example svg+xml, ....
-        handle_new_image(coredb, page['id'], img_src)
+    #imgs = driver.find_elements_by_xpath('//img[@src]')
+    #img_srcs = set([img.get_attribute('src') for img in imgs])
+    #for img_src in img_srcs:
+        #if ',' in img_src:
+            #continue  # for example svg+xml, ....
+        #handle_new_image(coredb, page['id'], img_src)
 
     coredb.update_page(page['id'], PageType.HTML.value, 200, source, html_hash)
 
