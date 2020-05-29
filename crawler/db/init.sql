@@ -5,11 +5,6 @@ CREATE TABLE crawldb.data_type (
 	CONSTRAINT pk_data_type_code PRIMARY KEY ( code )
  );
 
-CREATE TABLE crawldb.page_type ( 
-	code                 varchar(20)  NOT NULL,	
-	CONSTRAINT pk_page_type_code PRIMARY KEY ( code )
- );
-
 CREATE TABLE crawldb.site ( 
 	id                   serial  NOT NULL,
 	"domain"             varchar(500)  ,
@@ -31,7 +26,7 @@ CREATE TABLE crawldb.server (
 CREATE TABLE crawldb.page ( 
 	id                   serial  NOT NULL,
 	site_id              integer  ,
-	page_type_code       varchar(20)  ,
+	page_type_code       varchar(100)  ,
 	url                  varchar(3000)  ,
 	html_content         text  ,
 	html_hash			 text  ,
@@ -92,8 +87,6 @@ ALTER TABLE crawldb.link ADD CONSTRAINT fk_link_page_1 FOREIGN KEY ( to_page ) R
 
 ALTER TABLE crawldb.page ADD CONSTRAINT fk_page_site FOREIGN KEY ( site_id ) REFERENCES crawldb.site( id ) ON DELETE RESTRICT;
 
-ALTER TABLE crawldb.page ADD CONSTRAINT fk_page_page_type FOREIGN KEY ( page_type_code ) REFERENCES crawldb.page_type( code ) ON DELETE RESTRICT;
-
 ALTER TABLE crawldb.page_data ADD CONSTRAINT fk_page_data_page FOREIGN KEY ( page_id ) REFERENCES crawldb.page( id ) ON DELETE RESTRICT;
 
 ALTER TABLE crawldb.page_data ADD CONSTRAINT fk_page_data_data_type FOREIGN KEY ( data_type_code ) REFERENCES crawldb.data_type( code ) ON DELETE RESTRICT;
@@ -106,10 +99,3 @@ INSERT INTO crawldb.data_type VALUES
 	('DOCX'),
 	('PPT'),
 	('PPTX');
-
-INSERT INTO crawldb.page_type VALUES 
-	('HTML'),
-	('BINARY'),
-	('DUPLICATE'),
-	('FRONTIER'),
-	('PROCESSING');
