@@ -1,7 +1,7 @@
-Because of database dump size, we uploaded it to DropBox. Link to it is in link_to_db.txt file.
+Repurposed from assigment 1 and 2 for class Web data search and extraction.
+Credits for repository also go to Andraž Jelenc and Vid Križnar.
 
-# IEPS-WebCrawler
-Repository for WebCrawler project for class project Web data search and extraction.
+# ui-crawler
 The solution runs in two Docker containers: postgres and crawler.
 **Docker and Docker-compose packets are required to sucessfully run this project**
 
@@ -29,11 +29,3 @@ The solution runs in two Docker containers: postgres and crawler.
 3. To simplify accessing config file there is *ConfigManager* class inside *crawler/crawler-src*. This class maps config file into dictionaries by sections.
 
 **Mind that variables from docker-compose are pushed to container only on its creation!**
-
-#### Example on how to use ConfigManager class
-```
-from ConfigManager import ConfigManager
-
-cm = ConfigManager()
-bot_name = cm.get_crawler_params()['bot_name']
-```
