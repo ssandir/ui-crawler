@@ -6,4 +6,3 @@ selenium-wire
 bs4
 lxml
 beautifulsoup4==4.9.0
-lxml==4.5.0
