@@ -153,8 +153,8 @@ def handle_new_page(coredb, url, crawler_config, locks, link_from_id=None):
                                        crawler_config['request_delay'],
                                        coredb)
             site_obj = new_site_obj['site']
-            if new_site_obj['sitemap'] is not None:
-                sitemap_urls = new_site_obj['sitemap']
+            #if new_site_obj['sitemap'] is not None:
+                #sitemap_urls = new_site_obj['sitemap']
 
     # Handle sitemap outside of site lock
     if sitemap_urls is not None:
