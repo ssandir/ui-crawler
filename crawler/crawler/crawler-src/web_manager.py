@@ -200,4 +200,4 @@ def parse_page(coredb, driver, page, config, locks):
         elif content_type == 'html':
             process_html_page(coredb, driver, page, config, locks)
         else:  # pdf, docs...
-            process_binary_page(coredb, driver, page, content_type)
+            coredb.update_page(page['id'], 'BINARY', 200)
