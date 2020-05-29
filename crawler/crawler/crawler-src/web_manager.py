@@ -142,8 +142,8 @@ def get_links_from_page(driver, source):
 
 def process_html_page(coredb, driver, page, config, locks):
     source = get_clean_source(driver.page_source)
-    html_hash = get_source_hash(source)
-    duplicate_page = coredb.get_page_with_hash(html_hash)
+    text_content_hash = get_source_hash(source)
+    duplicate_page = coredb.get_page_with_hash(text_content_hash)
     if duplicate_page is not None:
         logging.debug('Duplicate page found with url: ' + duplicate_page['url'])
         # TODO: add column to db to list which page it's duplicate off
@@ -161,7 +161,7 @@ def process_html_page(coredb, driver, page, config, locks):
             #continue  # for example svg+xml, ....
         #handle_new_image(coredb, page['id'], img_src)
 
-    coredb.update_page(page['id'], PageType.HTML.value, 200, source, html_hash)
+    coredb.update_page(page['id'], PageType.HTML.value, 200, source, text_content_hash)
 
 
 def process_binary_page(coredb, driver, page, content_type):
