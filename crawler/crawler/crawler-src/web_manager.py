@@ -194,7 +194,7 @@ def parse_page(coredb, driver, page, config, locks):
         coredb.update_page(page['id'], None, None)
         return
 
-    if status_code != 200:
+    if status_code >= 200 and status_code < 210:
         if content_type is not None and content_type == 'html':
             coredb.update_page(page['id'], 'HTML', status_code)
         else:
