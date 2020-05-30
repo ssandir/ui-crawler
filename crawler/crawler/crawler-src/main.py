@@ -17,7 +17,7 @@ if __name__ == "__main__":
     crawler_config = cm.get_crawler_params()
     initialize_logger(crawler_config['log_level'])
 
-    logging.info('Running with params:')
+    logging.warning('Running with params:')
     pprint(crawler_config)
 
     seed_urls = crawler_config['seed_urls']

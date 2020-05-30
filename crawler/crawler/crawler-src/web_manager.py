@@ -11,7 +11,7 @@ from urllib.parse import urlparse, urljoin
 import logging
 from LinkCleaner import LinkCleaner
 from cleaner import Cleaner
-PAGE_GET_SLEEP_SECONDS = 2
+PAGE_GET_SLEEP_SECONDS = 3
 
 
 def init_selenium():
@@ -44,13 +44,9 @@ def get_status_code_and_content_type(driver):
                 break
             continue
 
-        status_code = driver.requests[i].response.status_code
-        if status_code not in [301, 302, 303, 307, 308]:
-            response = driver.requests[i].response
+        response = driver.requests[i].response
+        if response.status_code not in [301, 302, 303, 307, 308]:
             break
-    else:
-        # redirects till end
-        response = driver.requests[-1].response
 
     if response is None:
         # There were no response from server
@@ -175,9 +171,6 @@ def process_binary_page(coredb, driver, page, content_type):
 
 
 def parse_page(coredb, driver, page, config, locks):
-    # Extract status code and page type
-    status_code, content_type = get_status_code_and_content_type(driver)
-
     # Remove old request history
     del driver.requests
 
@@ -190,17 +183,14 @@ def parse_page(coredb, driver, page, config, locks):
     time.sleep(PAGE_GET_SLEEP_SECONDS)
 
     # Extract status code and page type
-    status_code, content_type_new = get_status_code_and_content_type(driver)
-
-    if status_code != 204:
-        content_type = content_type_new
+    status_code, content_type = get_status_code_and_content_type(driver)
 
     if status_code is None:
         logging.warning("Server did not respond on {}".format(page['url']))
         coredb.update_page(page['id'], None, None)
         return
 
-    if status_code < 200 or status_code > 210:
+    if  status_code > 310:
         if content_type is not None and content_type == 'html':
             coredb.update_page(page['id'], 'HTML', status_code)
         else:

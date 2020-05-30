@@ -5,8 +5,8 @@ import time
 import logging
 
 
-NUM_OF_TRIES = 600
-NUM_OF_DRIVER_REQUESTS = 20
+NUM_OF_TRIES = 50
+NUM_OF_DRIVER_REQUESTS = 5
 
 
 class Worker(threading.Thread):
@@ -26,7 +26,7 @@ class Worker(threading.Thread):
 
     def __del__(self):
         self.driver.close()
-        logging.debug("-- Thread destroyed")
+        logging.warning("-- Thread destroyed")
 
     def run(self):
         selenium_counter = 0
@@ -39,18 +39,18 @@ class Worker(threading.Thread):
                         break
                 time.sleep(1)
             else:
-                logging.info("No more work, stopping...")
+                logging.warning("No more work, stopping...")
                 break
 
             if selenium_counter == NUM_OF_DRIVER_REQUESTS:
                 logging.warning("Reseting selenium webdriver...")
                 self.driver.quit()
                 self.driver = init_selenium()
-                time.sleep(5)
+                time.sleep(3)
                 selenium_counter = 0
 
             try:
-                logging.info("Worker on: {0} [{1}/{2}]".format(page['url'], selenium_counter + 1, NUM_OF_DRIVER_REQUESTS))
+                logging.warning("Worker on: {3}: {0} [{1}/{2}]".format(page['url'], selenium_counter + 1, NUM_OF_DRIVER_REQUESTS, page['id']))
                 parse_page(self.coredb, self.driver, page, self.config, Worker.locks)
                 selenium_counter += 1
             except Exception as e:
