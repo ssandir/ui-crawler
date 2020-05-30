@@ -177,5 +177,5 @@ def handle_new_page(coredb, url, crawler_config, locks, link_from_id=None):
             page_obj = coredb.add_page(site_obj['id'], url)
 
     # Link page
-    if link_from_id is not None and page_obj is not None:
-        coredb.add_link(link_from_id, page_obj['id'])
+    #if link_from_id is not None and page_obj is not None:
+    #    coredb.add_link(link_from_id, page_obj['id'])

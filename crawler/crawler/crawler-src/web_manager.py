@@ -40,7 +40,9 @@ def get_status_code_and_content_type(driver):
     for i in range(len(driver.requests)):
         if driver.requests[i].response is None:
             # Server did not answer this
-            break
+            if i == 0:
+                break
+            continue
 
         status_code = driver.requests[i].response.status_code
         if status_code not in [301, 302, 303, 307, 308]:
