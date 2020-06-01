@@ -11,7 +11,8 @@ from urllib.parse import urlparse, urljoin
 import logging
 from LinkCleaner import LinkCleaner
 from cleaner import Cleaner
-PAGE_GET_SLEEP_SECONDS = 3
+PAGE_GET_SLEEP_SECONDS = 2
+import random
 
 
 def init_selenium():
@@ -23,7 +24,7 @@ def init_selenium():
     options.add_argument('--disable-notifications')  # Pls no alerts (might be deprecated and not work at all)
     options.add_argument('--disable-dev-shm-usage')  # Some resource/storage stuff
     options.add_argument('--no-sandbox')  # Rip security, but doesn't work otherwise
-    options.add_argument('user-agent=' + crawler_config['bot_name'])  # Course stuff
+    options.add_argument('user-agent=' + crawler_config['bot_name'] + repr(random.randint(0, 100)) + 't')  # Course stuff
     prefs = {"profile.managed_default_content_settings.images": 2}
     options.add_experimental_option("prefs", prefs)
     driver = webdriver.Chrome(crawler_config['chromedriver_path'], options=options)
@@ -34,14 +35,13 @@ def init_selenium():
 def get_status_code_and_content_type(driver):
     # let us follow the redirects and find correct response
     if len(driver.requests) == 0:
+        logging.warning("empty requests")
         return None, None
 
     response = None
     for i in range(len(driver.requests)):
         if driver.requests[i].response is None:
             # Server did not answer this
-            if i == 0:
-                break
             continue
 
         response = driver.requests[i].response
@@ -49,6 +49,7 @@ def get_status_code_and_content_type(driver):
             break
 
     if response is None:
+        logging.warning("empty response")
         # There were no response from server
         return None, None
 
@@ -151,9 +152,10 @@ def process_html_page(coredb, driver, page, config, locks):
         coredb.update_page(page['id'], PageType.DUPLICATE.value, 200, None, None, duplicate_page['id'])
         return
 
-    links = get_links_from_page(driver, source)
-    for url in links:
-        handle_new_link(coredb, config, url, page['id'], locks)
+    if False: # dont add new links
+        links = get_links_from_page(driver, source)
+        for url in links:
+            handle_new_link(coredb, config, url, page['id'], locks)
 
     #imgs = driver.find_elements_by_xpath('//img[@src]')
     #img_srcs = set([img.get_attribute('src') for img in imgs])
@@ -176,10 +178,13 @@ def parse_page(coredb, driver, page, config, locks):
 
     try:
         driver.get(page['url'])
-    except:
-        logging.debug("Error on: {}".format(page['url']))
-        coredb.update_page(page['id'], None, None)
-        return
+    except Exception as e:
+        try:
+            driver.get(page['url'])
+        except Exception as e2:
+            logging.warning("Error on: {}".format(page['url']) + repr(e2))
+            coredb.update_page(page['id'], None, None)
+            return
     time.sleep(PAGE_GET_SLEEP_SECONDS)
 
     # Extract status code and page type

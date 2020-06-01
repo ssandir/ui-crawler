@@ -46,7 +46,7 @@ class Worker(threading.Thread):
                 logging.warning("Reseting selenium webdriver...")
                 self.driver.quit()
                 self.driver = init_selenium()
-                time.sleep(3)
+                time.sleep(2)
                 selenium_counter = 0
 
             try:
